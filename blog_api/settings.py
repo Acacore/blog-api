@@ -126,8 +126,8 @@ REST_FRAMEWORK = {
 
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Your Project API',
-    'DESCRIPTION': 'Your project description',
+    'TITLE': 'BLOG-API',
+    'DESCRIPTION': 'A RESTful API for a blogging platform built with Django and Django REST Framework. Supports user authentication, CRUD operations for posts, and filtering by category and author.',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead

@@ -14,5 +14,5 @@ router.register(r'posts', PostViewSet)
 urlpatterns = [
     # Redirect root to Swagger UI
     # API routes
-    path('api/', include(router.urls)),
+    path('', include(router.urls)),
 ]
