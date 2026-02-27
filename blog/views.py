@@ -45,15 +45,29 @@ class UserViewSet(viewsets.ModelViewSet):
         instance.posts.all().delete()
         instance.comments.all().delete()
         instance.delete()
-   
+
+        
 @extend_schema(tags=["Categories"])
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+    def get_queryset(self):
+        # Your filter logic is perfect here
+        queryset = super().get_queryset()
+        name = self.request.query_params.get('name')
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+        return queryset
+
+  
+   
+
 
    
 @extend_schema(tags=["Posts"])
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+
 
