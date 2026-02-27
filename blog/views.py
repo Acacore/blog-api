@@ -46,7 +46,7 @@ class UserViewSet(viewsets.ModelViewSet):
         instance.comments.all().delete()
         instance.delete()
 
-        
+
 @extend_schema(tags=["Categories"])
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -61,13 +61,21 @@ class CategoryViewSet(viewsets.ModelViewSet):
         return queryset
 
   
-   
-
-
-   
 @extend_schema(tags=["Posts"])
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.objects.select_related('author', 'category').all()
     serializer_class = PostSerializer
 
+    def get_queryset(self):
+        queryset = self.queryset
+        category = self.request.query_params.get('category')
+        author = self.request.query_params.get('author')
+        if category:
+            queryset = queryset.filter(category__name__icontains=category)
+        if author:
+            queryset = queryset.filter(author__username__icontains=author)
+        return queryset
 
+    def perform_create(self, serializer):
+        # Only handle logic specific to the request-response cycle here
+        serializer.save(author=self.request.user)
