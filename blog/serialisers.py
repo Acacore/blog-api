@@ -10,6 +10,7 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name', 'slug']
+        read_only_fields = ['slug']
 
     def validate(self, attrs):
         return super().validate(attrs)
@@ -22,10 +23,16 @@ class CategorySerializer(serializers.ModelSerializer):
     
 class PostSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
-    category = CategorySerializer(read_only=True)
-
+    
     class Meta:
         model = Post
+        read_only_fields = ['slug']
         fields = ['id', 'title', 'slug', 'content', 'author', 'category', 'status', 'created_at', 'updated_at']
 
-        
+
+class CommentSerializer(serializers.ModelSerializer):
+    author = UserSerializer(read_only=True)
+   
+    class Meta:
+        model = Comment
+        fields = ['id', 'post', 'author', 'content', 'created_at']

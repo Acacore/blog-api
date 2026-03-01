@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from .models import User, Category, Post, Comment
-from .serialisers import UserSerializer, CategorySerializer, PostSerializer
+from .serialisers import UserSerializer, CategorySerializer, PostSerializer, CommentSerializer
 from rest_framework import viewsets
 from django.utils.text import slugify
 from django.contrib.auth.hashers import make_password
+from rest_framework.permissions import IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly
+from .permissions import IsAuthorOrReadOnly
 from drf_spectacular.utils import extend_schema
 
 
@@ -51,6 +53,9 @@ class UserViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [IsAdminUser]
+    lookup_field = 'slug'
+
 
     def get_queryset(self):
         # Your filter logic is perfect here
@@ -60,22 +65,52 @@ class CategoryViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(name__icontains=name)
         return queryset
 
-  
 @extend_schema(tags=["Posts"])
 class PostViewSet(viewsets.ModelViewSet):
+    # Added 'author' to select_related for performance
     queryset = Post.objects.select_related('author', 'category').all()
     serializer_class = PostSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
+    lookup_field = "slug"
+
 
     def get_queryset(self):
+        # Start with the optimized base queryset
         queryset = self.queryset
+        
         category = self.request.query_params.get('category')
         author = self.request.query_params.get('author')
+        
         if category:
+            # Filtering by category name
             queryset = queryset.filter(category__name__icontains=category)
         if author:
+            # Filtering by author username
             queryset = queryset.filter(author__username__icontains=author)
+        
         return queryset
 
     def perform_create(self, serializer):
-        # Only handle logic specific to the request-response cycle here
+        # Required to link the new post to the logged-in user
+        serializer.save(author=self.request.user)
+
+
+@extend_schema(tags=["Comments"])
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.select_related('author', 'post').all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated, IsAuthorOrReadOnly]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        
+        # 2. Filter by post ID (The user should only see comments for a specific post)
+        post_id = self.request.query_params.get('post')
+        if post_id:
+            queryset = queryset.filter(post_id=post_id)
+            
+        return queryset
+
+    def perform_create(self, serializer):
+        # 3. Automatically assign the logged-in user as the author
         serializer.save(author=self.request.user)

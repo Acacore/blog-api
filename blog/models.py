@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 import uuid
+from django.utils.text import slugify
 
 # Create your models here.
 class User(AbstractUser):
@@ -19,6 +20,22 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    from django.utils.text import slugify
+
+    def save(self, *args, **kwargs):
+        # 1. Always generate base slug if missing
+       
+        base_slug = slugify(self.name)
+        slug = base_slug
+        counter = 1
+            
+            # 2. Loop until we find a unique slug (e.g., python, python-1, python-2)
+        while Category.objects.filter(slug=slug).exists():
+            slug = f"{base_slug}-{counter}"
+            counter += 1
+            
+        self.slug = slug
+        super().save(*args, **kwargs)
 
 class Post(models.Model):
     STATUS_CHOICES = (
@@ -38,6 +55,23 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        # 1. Always generate base slug if missing
+       
+        base_slug = slugify(self.title)
+        slug = base_slug
+        counter = 1
+            
+            # 2. Loop until we find a unique slug (e.g., python, python-1, python-2)
+        while Post.objects.filter(slug=slug).exists():
+            slug = f"{base_slug}-{counter}"
+            counter += 1
+            
+        self.slug = slug
+        super().save(*args, **kwargs)
+
+    
 
 
 class Comment(models.Model):

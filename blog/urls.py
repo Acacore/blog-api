@@ -9,7 +9,7 @@ router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'categories', CategoryViewSet)
 router.register(r'posts', PostViewSet)
-
+router.register(r'comments', CommentViewSet)
 
 urlpatterns = [
     # Redirect root to Swagger UI

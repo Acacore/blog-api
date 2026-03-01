@@ -24,6 +24,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, Spec
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("blog.urls")),
+    re_path(r'^auth/', include('djoser.urls.jwt')),
     re_path(r'^auth/', include('djoser.urls')),
     re_path(r'^auth/', include('djoser.urls.authtoken')),
     path("", RedirectView.as_view(url="api/schema/swagger-ui/", permanent=False)),

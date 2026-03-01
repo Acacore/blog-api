@@ -1,0 +1,168 @@
+
+GET http://127.0.0.1:8000/api/posts/
+
+###
+POST http://127.0.0.1:8000/auth/jwt/create/
+Content-Type: application/json
+
+{
+    "username": "Admin",
+    "password": "Admin"
+}
+
+###
+POST http://127.0.0.1:8000/auth/users/
+Content-Type: application/json
+
+{
+    "username": "Mensart",
+    "email": "mensart@example.com",
+    "password": "CreateUser$123",
+    "re_password": "CreateUser$123"
+}
+
+
+###
+POST http://127.0.0.1:8000/auth/jwt/create/
+Content-Type: application/json
+
+{
+    "username": "Mensart",
+    "password": "CreateUser$123"
+}
+
+###
+PUT http://127.0.0.1:8000/auth/users/me/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyMzc2MDM5LCJpYXQiOjE3NzIyMDMyMzksImp0aSI6IjJmYzVhNTQwOWVjOTQyM2VhMDkzMzcwNTExZDdmY2I1IiwidXNlcl9pZCI6ImJkMWYyOWJhLTM1MzMtNGJjZC04Yjc1LWUyNzYxMTA2NWFhOCJ9.x70EWbqk82zjuut3kGDVwvv1m2FYrmZ8j5pK0VZDmRM
+
+{
+    "first_name": "Mensart",
+    "last_name": "Elite"
+}
+
+
+###
+GET http://127.0.0.1:8000/api/categories/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyMzcxNTAyLCJpYXQiOjE3NzIxOTg3MDIsImp0aSI6ImQ4ZmQzMDg0NDRhZTQ5MjRhMWE0N2E0YWM2MzM1ZWYzIiwidXNlcl9pZCI6ImQzODBjNTUwLTY5NjAtNDY0OS1hYTRjLTFmMDVjYTk4ZjhjNyJ9.v5FbVMsoIPyJ9o1EqE0O9EBf4DtVK_3HxROAH3Ls7tY
+###
+
+POST http://127.0.0.1:8000/api/categories/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyMzcwNTY3LCJpYXQiOjE3NzIxOTc3NjcsImp0aSI6ImVkMjQzNjA1ZGU4NDRiOTE4NWQ5NDc3NjNjMWQ0NzNiIiwidXNlcl9pZCI6ImQzODBjNTUwLTY5NjAtNDY0OS1hYTRjLTFmMDVjYTk4ZjhjNyJ9.4QmEHsn67w3igLtIXiDBfF1uxzFFGfD84ko9K5bOAD8
+
+{
+    "name": "Sports"
+}
+###
+
+PATCH  http://127.0.0.1:8000/api/categories/sports/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyMzcwNTY3LCJpYXQiOjE3NzIxOTc3NjcsImp0aSI6ImVkMjQzNjA1ZGU4NDRiOTE4NWQ5NDc3NjNjMWQ0NzNiIiwidXNlcl9pZCI6ImQzODBjNTUwLTY5NjAtNDY0OS1hYTRjLTFmMDVjYTk4ZjhjNyJ9.4QmEHsn67w3igLtIXiDBfF1uxzFFGfD84ko9K5bOAD8
+
+{
+    "name": "Music"
+}
+
+###
+PUT  http://127.0.0.1:8000/api/categories/music/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyMzcwNTY3LCJpYXQiOjE3NzIxOTc3NjcsImp0aSI6ImVkMjQzNjA1ZGU4NDRiOTE4NWQ5NDc3NjNjMWQ0NzNiIiwidXNlcl9pZCI6ImQzODBjNTUwLTY5NjAtNDY0OS1hYTRjLTFmMDVjYTk4ZjhjNyJ9.4QmEHsn67w3igLtIXiDBfF1uxzFFGfD84ko9K5bOAD8
+
+{
+    "name": "Music-Lovers"
+}
+###
+
+
+DELETE http://127.0.0.1:8000/api/categories/music-lovers/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyMzcwNTY3LCJpYXQiOjE3NzIxOTc3NjcsImp0aSI6ImVkMjQzNjA1ZGU4NDRiOTE4NWQ5NDc3NjNjMWQ0NzNiIiwidXNlcl9pZCI6ImQzODBjNTUwLTY5NjAtNDY0OS1hYTRjLTFmMDVjYTk4ZjhjNyJ9.4QmEHsn67w3igLtIXiDBfF1uxzFFGfD84ko9K5bOAD8
+
+###
+
+GET http://127.0.0.1:8000/api/posts/
+
+###
+POST http://127.0.0.1:8000/api/posts/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyMzg1ODU2LCJpYXQiOjE3NzIyMTMwNTYsImp0aSI6ImUzYmE3NjFmOWI0OTQyZmViNGJjNDM1ZTc4OTBjYzZiIiwidXNlcl9pZCI6ImJkMWYyOWJhLTM1MzMtNGJjZC04Yjc1LWUyNzYxMTA2NWFhOCJ9.LhRsteCboov_3w9J9V5VBao-NjRMBUoXORhBRozLQY4
+Content-Type: application/json
+
+{
+    "title": "Hilary Clion Audition",
+    "content": "Nice talk",
+    "status": "draft",
+    "category": "8e2d93df-3418-49e2-9194-3c96edfd19fb"
+}
+###
+
+
+GET http://127.0.0.1:8000/api/posts/
+
+###
+
+
+PUT http://127.0.0.1:8000/api/posts/hilary-clion-audition/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyMzg1ODU2LCJpYXQiOjE3NzIyMTMwNTYsImp0aSI6ImUzYmE3NjFmOWI0OTQyZmViNGJjNDM1ZTc4OTBjYzZiIiwidXNlcl9pZCI6ImJkMWYyOWJhLTM1MzMtNGJjZC04Yjc1LWUyNzYxMTA2NWFhOCJ9.LhRsteCboov_3w9J9V5VBao-NjRMBUoXORhBRozLQY4
+Content-Type: application/json
+
+{
+    "title": "Bill Clion Audition",
+    "content": "Nice talk",
+    "status": "draft",
+    "category": "8e2d93df-3418-49e2-9194-3c96edfd19fb"
+}
+###
+
+PATCH http://127.0.0.1:8000/api/posts/bill-clion-audition/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyMzg1ODU2LCJpYXQiOjE3NzIyMTMwNTYsImp0aSI6ImUzYmE3NjFmOWI0OTQyZmViNGJjNDM1ZTc4OTBjYzZiIiwidXNlcl9pZCI6ImJkMWYyOWJhLTM1MzMtNGJjZC04Yjc1LWUyNzYxMTA2NWFhOCJ9.LhRsteCboov_3w9J9V5VBao-NjRMBUoXORhBRozLQY4
+Content-Type: application/json
+
+{
+    "title": "Hilary Clion Audition",
+    "content": "Nice talk",
+    "status": "published",
+    "category": "8e2d93df-3418-49e2-9194-3c96edfd19fb"
+}
+###
+
+DELETE http://127.0.0.1:8000/api/posts/bill-clion-audition/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyMzg1ODU2LCJpYXQiOjE3NzIyMTMwNTYsImp0aSI6ImUzYmE3NjFmOWI0OTQyZmViNGJjNDM1ZTc4OTBjYzZiIiwidXNlcl9pZCI6ImJkMWYyOWJhLTM1MzMtNGJjZC04Yjc1LWUyNzYxMTA2NWFhOCJ9.LhRsteCboov_3w9J9V5VBao-NjRMBUoXORhBRozLQY4
+
+###
+
+GET http://127.0.0.1:8000/api/comments/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyMzg1ODU2LCJpYXQiOjE3NzIyMTMwNTYsImp0aSI6ImUzYmE3NjFmOWI0OTQyZmViNGJjNDM1ZTc4OTBjYzZiIiwidXNlcl9pZCI6ImJkMWYyOWJhLTM1MzMtNGJjZC04Yjc1LWUyNzYxMTA2NWFhOCJ9.LhRsteCboov_3w9J9V5VBao-NjRMBUoXORhBRozLQY4
+###
+
+POST http://127.0.0.1:8000/api/comments/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyMzg1ODU2LCJpYXQiOjE3NzIyMTMwNTYsImp0aSI6ImUzYmE3NjFmOWI0OTQyZmViNGJjNDM1ZTc4OTBjYzZiIiwidXNlcl9pZCI6ImJkMWYyOWJhLTM1MzMtNGJjZC04Yjc1LWUyNzYxMTA2NWFhOCJ9.LhRsteCboov_3w9J9V5VBao-NjRMBUoXORhBRozLQY4
+Content-Type: application/json
+
+{
+  "post": "95b61177-7209-482a-b1fb-1aceb7d19f4a",
+  "content": "Nice move"
+}
+
+###
+PUT http://127.0.0.1:8000/api/comments/4fe2a17f-c99d-46c9-a059-1a74ae0bc44d/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyMzg1ODU2LCJpYXQiOjE3NzIyMTMwNTYsImp0aSI6ImUzYmE3NjFmOWI0OTQyZmViNGJjNDM1ZTc4OTBjYzZiIiwidXNlcl9pZCI6ImJkMWYyOWJhLTM1MzMtNGJjZC04Yjc1LWUyNzYxMTA2NWFhOCJ9.LhRsteCboov_3w9J9V5VBao-NjRMBUoXORhBRozLQY4
+Content-Type: application/json
+
+{
+  "post": "95b61177-7209-482a-b1fb-1aceb7d19f4a",
+  "content": "Nice move indeed"
+}
+
+###
+PATCH http://127.0.0.1:8000/api/comments/4fe2a17f-c99d-46c9-a059-1a74ae0bc44d/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyMzg1ODU2LCJpYXQiOjE3NzIyMTMwNTYsImp0aSI6ImUzYmE3NjFmOWI0OTQyZmViNGJjNDM1ZTc4OTBjYzZiIiwidXNlcl9pZCI6ImJkMWYyOWJhLTM1MzMtNGJjZC04Yjc1LWUyNzYxMTA2NWFhOCJ9.LhRsteCboov_3w9J9V5VBao-NjRMBUoXORhBRozLQY4
+Content-Type: application/json
+
+{
+  "post": "95b61177-7209-482a-b1fb-1aceb7d19f4a",
+  "content": "Nice move indeed"
+}
+
+###
+DELETE http://127.0.0.1:8000/api/comments/4fe2a17f-c99d-46c9-a059-1a74ae0bc44d/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyMzg1ODU2LCJpYXQiOjE3NzIyMTMwNTYsImp0aSI6ImUzYmE3NjFmOWI0OTQyZmViNGJjNDM1ZTc4OTBjYzZiIiwidXNlcl9pZCI6ImJkMWYyOWJhLTM1MzMtNGJjZC04Yjc1LWUyNzYxMTA2NWFhOCJ9.LhRsteCboov_3w9J9V5VBao-NjRMBUoXORhBRozLQY4
