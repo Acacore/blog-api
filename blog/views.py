@@ -7,6 +7,8 @@ from django.contrib.auth.hashers import make_password
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly
 from .permissions import IsAuthorOrReadOnly
 from drf_spectacular.utils import extend_schema
+from django_filters.rest_framework import DjangoFilterBackend
+from .filters import PostFilter
 
 
 # Create your views here.
@@ -72,6 +74,8 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
     lookup_field = "slug"
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = PostFilter
 
 
     def get_queryset(self):
