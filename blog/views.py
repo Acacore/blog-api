@@ -4,7 +4,7 @@ from .serialisers import UserSerializer, CategorySerializer, PostSerializer, Com
 from rest_framework import viewsets
 from django.utils.text import slugify
 from django.contrib.auth.hashers import make_password
-from rest_framework.permissions import IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
 from .permissions import IsAuthorOrReadOnly
 from drf_spectacular.utils import extend_schema
 from django_filters.rest_framework import DjangoFilterBackend
@@ -15,7 +15,7 @@ from .pagination import StandardResultsSetPagination
 
 
 # Create your views here.
-# @extend_schema(tags=["Users"])
+@extend_schema(tags=["Users"])
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -54,13 +54,22 @@ class UserViewSet(viewsets.ModelViewSet):
         instance.delete()
 
 
+
 @extend_schema(tags=["Categories"])
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsAdminUser]
     lookup_field = 'slug'
 
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions that this view requires.
+        """
+        if self.action in ['list', 'retrieve']:
+            permission_classes = [AllowAny]
+        else:
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]
 
     def get_queryset(self):
         # Your filter logic is perfect here
@@ -69,6 +78,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
         if name:
             queryset = queryset.filter(name__icontains=name)
         return queryset
+
+
 
 @extend_schema(tags=["Posts"])
 class PostViewSet(viewsets.ModelViewSet):
@@ -107,7 +118,7 @@ class PostViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.select_related('author', 'post').all()
     serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticated, IsAuthorOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
