@@ -24,6 +24,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # DEBUG = os.getenv('DEBUG') == 'True'
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
@@ -33,8 +34,12 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 # SECURITY WARNING: don't run with debug turned on in production!
 
 
-ALLOWED_HOSTS = ["acacore.pythonanywhere.com"]
-STATIC_ROOT = BASE_DIR / "staticfiles"
+# ALLOWED_HOSTS = ["acacore.pythonanywhere.com"]
+
+
+
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost").split(",")
+
 
 # Application definition
 
@@ -159,12 +164,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = "static/"
+
 
 AUTH_USER_MODEL = 'blog.User'
 
 
-
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=2),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=5),

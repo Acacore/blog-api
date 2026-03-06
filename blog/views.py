@@ -15,7 +15,7 @@ from .pagination import StandardResultsSetPagination
 
 
 # Create your views here.
-@extend_schema(tags=["Users"])
+# @extend_schema(tags=["Users"])
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
