@@ -12,6 +12,7 @@ django-allauth
 django-allauth[socialaccount]
 django-phonenumber-field[phonenumbers]
 django-countries
+psycopg[binary]
 # geopy
 # pycountry
 drf-spectacular

@@ -9,6 +9,9 @@ from .permissions import IsAuthorOrReadOnly
 from drf_spectacular.utils import extend_schema
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import PostFilter
+from .pagination import StandardResultsSetPagination
+
+
 
 
 # Create your views here.
@@ -76,11 +79,12 @@ class PostViewSet(viewsets.ModelViewSet):
     lookup_field = "slug"
     filter_backends = [DjangoFilterBackend]
     filterset_class = PostFilter
+    pagination_class = StandardResultsSetPagination
 
 
     def get_queryset(self):
         # Start with the optimized base queryset
-        queryset = self.queryset
+        queryset = self.queryset              
         
         category = self.request.query_params.get('category')
         author = self.request.query_params.get('author')
@@ -104,6 +108,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.select_related('author', 'post').all()
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticated, IsAuthorOrReadOnly]
+    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         queryset = super().get_queryset()
