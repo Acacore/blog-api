@@ -10,13 +10,14 @@ Content-Type: application/json
     "password": "Admin"
 }
 
+
 ###
 POST http://127.0.0.1:8000/auth/users/
 Content-Type: application/json
 
 {
-    "username": "Mensart",
-    "email": "mensart@example.com",
+    "username": "AlxUser",
+    "email": "alxuser@alx.com",
     "password": "CreateUser$123",
     "re_password": "CreateUser$123"
 }
@@ -27,7 +28,7 @@ POST http://127.0.0.1:8000/auth/jwt/create/
 Content-Type: application/json
 
 {
-    "username": "Mensart",
+    "username": "AlxUser",
     "password": "CreateUser$123"
 }
 

@@ -5,9 +5,16 @@ from django.utils.text import slugify
 
 # Create your models here.
 class User(AbstractUser):
+    ROLE_CHOICES = [
+        ("ADMIN", "Admin"),
+        ("STAFF", "Staff"),
+        ("USER", "User"),
+    ]
+    
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     bio = models.TextField(blank=True)
     profile_picture = models.ImageField(upload_to='profiles/', blank=True, null=True)
+    role = models.CharField(choices=ROLE_CHOICES, default=ROLE_CHOICES[2][0], max_length=16)
 
     def __str__(self):
         return self.username
@@ -20,11 +27,10 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-    from django.utils.text import slugify
+    
 
     def save(self, *args, **kwargs):
         # 1. Always generate base slug if missing
-       
         base_slug = slugify(self.name)
         slug = base_slug
         counter = 1

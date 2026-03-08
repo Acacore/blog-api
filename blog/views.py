@@ -5,7 +5,7 @@ from rest_framework import viewsets
 from django.utils.text import slugify
 from django.contrib.auth.hashers import make_password
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
-from .permissions import IsAuthorOrReadOnly
+from .permissions import IsAuthorOrReadOnly, IsStaffOrAdminOrReadOnly
 from drf_spectacular.utils import extend_schema
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import PostFilter
@@ -86,7 +86,7 @@ class PostViewSet(viewsets.ModelViewSet):
     # Added 'author' to select_related for performance
     queryset = Post.objects.select_related('author', 'category').all()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
+    permission_classes = [IsStaffOrAdminOrReadOnly, IsAuthorOrReadOnly]
     lookup_field = "slug"
     filter_backends = [DjangoFilterBackend]
     filterset_class = PostFilter
