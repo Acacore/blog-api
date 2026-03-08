@@ -2,39 +2,39 @@ import uuid
 from django.core.management.base import BaseCommand
 from django.utils.text import slugify
 from django.contrib.auth import get_user_model
-from blog.models import Category, Post
+from blog.models import Category, Post, Comment
 User = get_user_model()
 
+
 class Command(BaseCommand):
-    help = "Seeds the database with Admin, Staff, Categories, and Posts"
+    help = "Seeds the database with Users, Categories, Posts, and 140 Comments"
 
     def handle(self, *args, **kwargs):
-        self.stdout.write(self.style.MIGRATE_LABEL("--- Starting Database Seeding ---"))
+        self.stdout.write(self.style.MIGRATE_LABEL("--- Starting Comprehensive Seeding ---"))
 
-        # 1. Verify Admin exists
-        try:
-            admin = User.objects.get(is_superuser=True)
-            self.stdout.write(f"Confirmed Superuser: {admin.username}")
-        except User.DoesNotExist:
-            self.stdout.write(self.style.ERROR("Error: No superuser found. Run 'python manage.py createsuperuser' first."))
-            return
-
-        # 2. Ensure Staff User exists (The author for our posts)
-        staff_user, created = User.objects.get_or_create(
+        # 1. Ensure Staff User exists
+        staff_user, _ = User.objects.get_or_create(
             username="staff_writer",
-            defaults={
-                "email": "writer@blogflow.com",
-                "role": "STAFF",
-                "is_staff": True,
-                "bio": "Professional backend blogger."
-            }
+            defaults={"email": "writer@blogflow.com", "role": "STAFF", "is_staff": True}
         )
-        if created:
+        if _:
             staff_user.set_password("password123")
             staff_user.save()
-            self.stdout.write(self.style.SUCCESS("Created Staff User: staff_writer"))
 
-        # 3. Define Data Map: Category -> List of Post Titles
+        # 2. Create a Pool of 10 Regular Users
+        commenting_users = []
+        for i in range(1, 11):
+            user, created = User.objects.get_or_create(
+                username=f"user_{i}",
+                defaults={"email": f"user{i}@example.com", "role": "USER"}
+            )
+            if created:
+                user.set_password("password123")
+                user.save()
+            commenting_users.append(user)
+        self.stdout.write(self.style.SUCCESS(f"Verified 10 commenting users."))
+
+        # 3. Data Map for Categories and Posts
         data_map = {
             "General": ["Daily Community Updates", "Local Town Hall Highlights"],
             "Politics": ["New Policy Reform Announced", "Election Season Preparations"],
@@ -45,29 +45,44 @@ class Command(BaseCommand):
             "Sports": ["Championship Finals Recap", "Training for Your First Marathon"]
         }
 
-        # 4. Loop through the Map to create Categories and then their Posts
-        for cat_name, post_titles in data_map.items():
-            # Create Category (Slug is handled by get_or_create defaults)
-            category, cat_created = Category.objects.get_or_create(
-                name=cat_name,
-                defaults={'slug': slugify(cat_name)}
-            )
-            
-            if cat_created:
-                self.stdout.write(self.style.SUCCESS(f"Created Category: {cat_name}"))
+        # 4. Seed Categories, Posts, and 10 Comments per Post
+        sample_comments = [
+            "Great insights, thanks for sharing!",
+            "I found this very helpful for my current project.",
+            "Interesting perspective, but I slightly disagree with the second point.",
+            "Can you provide more details on this?",
+            "Exactly what I was looking for today.",
+            "Nicely written and very easy to follow.",
+            "Does this apply to small-scale systems too?",
+            "Bookmarking this for later. Thanks!",
+            "I'd love to see a follow-up post on this topic.",
+            "Solid explanation of a complex subject."
+        ]
 
-            # Create Posts for this specific category
+        for cat_name, post_titles in data_map.items():
+            category, _ = Category.objects.get_or_create(name=cat_name, defaults={'slug': slugify(cat_name)})
+            
             for title in post_titles:
                 post, post_created = Post.objects.get_or_create(
                     title=title,
                     author=staff_user,
                     defaults={
-                        "content": f"This is the official content for {title}. It covers the latest trends in {cat_name}.",
+                        "content": f"Content for {title} in {cat_name}.",
                         "category": category,
                         "status": "published"
                     }
                 )
-                if post_created:
-                    self.stdout.write(f"  - Created Post: {title}")
 
-        self.stdout.write(self.style.SUCCESS("\n--- Database Population Complete! ---"))
+                # 5. Create 10 unique comments for every post
+                # We use get_or_create on content + post + author to avoid duplicates
+                for i in range(10):
+                    Comment.objects.get_or_create(
+                        post=post,
+                        author=commenting_users[i],
+                        defaults={"content": sample_comments[i]}
+                    )
+                
+                if post_created:
+                    self.stdout.write(f"  - Created Post & 10 Comments: {title}")
+
+        self.stdout.write(self.style.SUCCESS("\n--- Seeding Complete: 14 Posts and 140 Comments! ---"))
