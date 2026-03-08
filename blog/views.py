@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import User, Category, Post, Comment
 from .serialisers import UserSerializer, CategorySerializer, PostSerializer, CommentSerializer
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 from django.utils.text import slugify
 from django.contrib.auth.hashers import make_password
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
@@ -83,13 +83,18 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 @extend_schema(tags=["Posts"])
 class PostViewSet(viewsets.ModelViewSet):
-    # Added 'author' to select_related for performance
-    queryset = Post.objects.select_related('author', 'category').all()
+    # select_related avoids the "N+1" problem when fetching 140+ comments later
+    queryset = Post.objects.select_related('author', 'category').prefetch_related('comments').all()
     serializer_class = PostSerializer
-    permission_classes = [IsStaffOrAdminOrReadOnly, IsAuthorOrReadOnly]
     lookup_field = "slug"
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = PostFilter
+    
+    # This ensures:
+    # 1. Anyone can GET (ReadOnly)
+    # 2. Only Authenticated Staff/Admins can POST/PUT/DELETE
+    permission_classes = [IsStaffOrAdminOrReadOnly]
+    
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_class = PostFilter # Ensure this handles 'category' and 'author'
     pagination_class = StandardResultsSetPagination
 
 

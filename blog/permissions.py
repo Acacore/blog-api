@@ -24,3 +24,5 @@ class IsStaffOrAdminOrReadOnly(permissions.BasePermission):
             request.user.is_authenticated and 
             (request.user.is_staff or request.user.is_superuser)
         )
+
+
