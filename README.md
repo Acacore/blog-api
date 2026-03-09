@@ -1,10 +1,6 @@
-# blog-api
-A RESTful API for a blogging platform built with Django and Django REST Framework. Supports user authentication, CRUD operations for posts, and filtering by category and author.
-
-
 # Blog API
-
 A robust, SEO-friendly, and secure backend architecture for a modern content-driven application, built with Django and Django REST Framework.
+
 
 ## Overview
 Custom User System: Extends AbstractUser to support granular roles (Admin, Staff, User) and profile management while utilizing UUIDs for all user identification.
