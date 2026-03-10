@@ -84,7 +84,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 @extend_schema(tags=["Posts"])
 class PostViewSet(viewsets.ModelViewSet):
     # select_related avoids the "N+1" problem when fetching 140+ comments later
-    queryset = Post.objects.select_related('author', 'category').prefetch_related('comments').all()
+    queryset = Post.objects.select_related('author', 'category')
     serializer_class = PostSerializer
     lookup_field = "slug"
     
@@ -96,22 +96,13 @@ class PostViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_class = PostFilter # Ensure this handles 'category' and 'author'
     pagination_class = StandardResultsSetPagination
+    search_fields  = ['title', 'content']
+    
 
 
     def get_queryset(self):
-        # Start with the optimized base queryset
-        queryset = self.queryset              
         
-        category = self.request.query_params.get('category')
-        author = self.request.query_params.get('author')
-        
-        if category:
-            # Filtering by category name
-            queryset = queryset.filter(category__name__icontains=category)
-        if author:
-            # Filtering by author username
-            queryset = queryset.filter(author__username__icontains=author)
-        
+        queryset = Post.objects.select_related('author', 'category').prefetch_related('comments').all()
         return queryset
 
     def perform_create(self, serializer):
