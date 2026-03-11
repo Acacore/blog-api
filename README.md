@@ -82,7 +82,9 @@ Performance Optimized: (Optional but recommended to add) Optimized with select_r
 The API is currently live and hosted on PythonAnywhere. You can interact with the production build here:
 
 
-**Live Demo**: [https://acacore.pythonanywhere.com](https://acacore.pythonanywhere.com)
+**Deployed API**: [https://acacore.pythonanywhere.com](https://acacore.pythonanywhere.com)
+
+**Live Demo**: [https://youtu.be/f3C22Bttu8k](https://youtu.be/f3C22Bttu8k)
 
 🚀 Deployment & CI/CD
 This project is deployed using a standard WSGI configuration on PythonAnywhere, focusing on a lightweight and efficient backend footprint.
